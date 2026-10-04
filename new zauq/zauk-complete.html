@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="ur-PK" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZAUK</title>
+  
+  <!-- Zauk Favicon -->
+  <link rel="icon" type="image/png" href="./public/logo.png">
+  <link rel="apple-touch-icon" href="./public/logo.png">
+
+  <!-- Typographic Suite -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Inter:ital,opsz,wght@0,14..32,200;0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,300&family=Noto+Nastaliq+Urdu:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --raw-obsidian: #0D0C0B;
+      --raw-stone: #151311;
+      --stone-mid: #2C2825;
+      --canvas-sand: #F8F6F1;
+      --canvas-warm: #FAF8F5;
+      --surface-pure: #FFFFFF;
+      --sandstone-deep: #EFE9DF;
+      --sandstone-hairline: rgba(21, 19, 17, 0.12);
+      --gold-ochre: #997444;
+      --gold-ochre-light: #C2A272;
+      --gold-ochre-muted: rgba(153, 116, 68, 0.18);
+      --muted-smoke: #6A6761;
+
+      --font-display: 'Cinzel', serif;
+      --font-editorial: 'Playfair Display', Georgia, serif;
+      --font-urdu: 'Noto Nastaliq Urdu', 'Amiri', serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --transition-editorial: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--canvas-warm);
+      color: var(--raw-stone);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .font-brand { font-family: var(--font-display); }
+    .font-editorial { font-family: var(--font-editorial); }
+    .font-urdu { font-family: var(--font-urdu); line-height: 2.1; }
+    .font-ui { font-family: var(--font-body); }
+
+    .border-subtle { border: 1px solid var(--sandstone-hairline); }
+    .border-b-subtle { border-bottom: 1px solid var(--sandstone-hairline); }
+    .border-t-subtle { border-top: 1px solid var(--sandstone-hairline); }
+
+    ::selection { background: var(--gold-ochre); color: #FFFFFF; }
+
+    /* =============================================================
+       SITE LOGO IMAGERY STYLES
+       ============================================================= */
+    .brandmark-center {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .brand-logo-img {
+      height: 38px;
+      width: auto;
+      max-width: 180px;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .brandmark-center:hover .brand-logo-img {
+      opacity: 0.85;
+      transform: scale(1.02);
+    }
+
+    .drawer-logo-img {
+      height: 32px;
+      width: auto;
+      max-width: 150px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .footer-logo-img {
+      height: 42px;
+      width: auto;
+      max-width: 200px;
+      object-fit: contain;
+      display: block;
+      filter: brightness(0) invert(1); /* Ensures dark logo PNG/SVGs render pure white on obsidian footer */
+      transition: opacity 0.3s ease;
+    }
+    .footer-logo-img:hover {
+      opacity: 0.85;
+    }
+
+    /* =============================================================
+       HIGH-END E-COMMERCE BUTTON ARCHITECTURE ("ADD TO BAG")
+       ============================================================= */
+    .btn-zauk-action {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--raw-stone);
+      color: #FAF8F5;
+      border: 1px solid var(--raw-stone);
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      padding: 0.95rem 2.8rem;
+      cursor: pointer;
+      text-decoration: none;
+      overflow: hidden;
+      isolation: isolate;
+      transition: color 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+                  border-color 0.45s cubic-bezier(0.16, 1, 0.3, 1), 
+                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-zauk-action::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #A88350 0%, #856133 100%);
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+
+    .btn-zauk-action:hover {
+      color: #FFFFFF;
+      border-color: var(--gold-ochre);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(153, 116, 68, 0.22);
+      letter-spacing: 0.28em;
+    }
+
+    .btn-zauk-action:hover::before {
+      transform: translateY(0);
+    }
+
+    .btn-zauk-action:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 12px rgba(153, 116, 68, 0.16);
+    }
+
+    /* Top Ribbon */
+    .top-utility-ribbon {
+      background: var(--raw-obsidian);
+      color: #E2DDD5;
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 8px 0;
+    }
+    .top-utility-ribbon .insta-icon {
+      font-size: 0.95rem;
+      color: #E2DDD5;
+      transition: var(--transition-editorial);
+    }
+    .top-utility-ribbon .insta-icon:hover { color: var(--gold-ochre-light); }
+
+    /* Sticky Site Header */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1030;
+      background: rgba(250, 248, 245, 0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: var(--transition-editorial);
+    }
+    .site-header.scrolled {
+      background: rgba(255, 255, 255, 0.98);
+      box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+    }
+
+    .menu-trigger-btn {
+      background: transparent;
+      border: none;
+      color: var(--raw-stone);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 0.3s ease;
+    }
+    .menu-trigger-btn:hover { color: var(--gold-ochre); }
+    .menu-trigger-bars { display: flex; flex-direction: column; gap: 5px; width: 22px; }
+    .menu-bar-line { width: 100%; height: 1.5px; background-color: currentColor; }
+    .menu-trigger-text {
+      font-family: var(--font-display);
+      font-size: 0.65rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* Offcanvas */
+    .offcanvas-categories { background-color: var(--canvas-sand); width: 380px !important; max-width: 90vw; }
+    .category-nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--sandstone-hairline);
+      color: var(--raw-stone);
+      text-decoration: none;
+      font-family: var(--font-editorial);
+      font-size: 1.25rem;
+      transition: var(--transition-editorial);
+    }
+    .category-nav-item:hover { color: var(--gold-ochre); padding-left: 8px; }
+    .category-nav-num { font-family: var(--font-display); font-size: 0.65rem; letter-spacing: 0.2em; color: var(--gold-ochre); }
+
+    /* Hero */
+    .hero-cinematic-stage {
+      position: relative;
+      height: 90vh;
+      min-height: 600px;
+      max-height: 940px;
+      background: #0D0C0B;
+      overflow: hidden;
+    }
+    .hero-video-bg {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      object-fit: cover; object-position: center 30%;
+      opacity: 1; filter: none;
+      pointer-events: none;
+    }
+    .hero-cinematic-scrim {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(13, 12, 11, 0.4) 0%, transparent 60%),
+                  linear-gradient(to top, rgba(13, 12, 11, 0.75) 0%, rgba(13, 12, 11, 0.15) 35%, transparent 100%);
+      pointer-events: none; z-index: 1;
+    }
+    .hero-bottom-left-deck {
+      position: absolute; bottom: 3.2rem; left: 4vw; z-index: 2;
+      color: rgba(255, 255, 255, 0.92); max-width: 440px;
+    }
+    .hero-title-minimal {
+      font-family: var(--font-editorial); font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+      line-height: 1.18; margin-bottom: 0.45rem; color: #FFFFFF;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.5);
+    }
+    .hero-title-minimal em { font-style: italic; color: #D8C2A0; }
+    .hero-urdu-minimal {
+      font-family: var(--font-urdu); font-size: 0.92rem;
+      color: rgba(250, 247, 242, 0.85); margin-bottom: 1.2rem;
+      display: block; line-height: 2.1;
+    }
+    .btn-hero-single {
+      background: rgba(255, 255, 255, 0.08); color: #FFFFFF;
+      padding: 0.75rem 2.2rem; text-transform: uppercase;
+      letter-spacing: 0.24em; font-family: var(--font-display);
+      font-size: 0.65rem; text-decoration: none; display: inline-block;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-editorial);
+    }
+    .btn-hero-single:hover {
+      background-color: var(--gold-ochre);
+      border-color: var(--gold-ochre);
+      color: #FFFFFF;
+      transform: translateY(-2px);
+      letter-spacing: 0.28em;
+    }
+
+    /* Architectural Partition */
+    .hero-architectural-partition {
+      background-color: var(--canvas-sand);
+      padding: 1.8rem 4vw; display: flex; align-items: center; justify-content: center;
+    }
+    .partition-line-wrap { width: 100%; max-width: 1200px; display: flex; align-items: center; gap: 2rem; }
+    .partition-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--sandstone-hairline) 30%, var(--sandstone-hairline) 70%, transparent); }
+    .partition-emblem {
+      font-family: var(--font-display); font-size: 0.72rem; letter-spacing: 0.36em;
+      color: var(--gold-ochre); text-transform: uppercase; display: flex; align-items: center; gap: 12px;
+    }
+
+
+    /* =============================================================
+       MANIFESTO / SIGNATURE FABRIC PROFILES
+       ============================================================= */
+    .curation-manifesto-section {
+      background-color: var(--canvas-sand);
+      border-bottom: 1px solid var(--sandstone-hairline);
+      overflow: hidden;
+    }
+
+    .manifesto-split-stage {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      min-height: calc(86vh - 42px);
+    }
+
+    .manifesto-editorial-pane {
+      padding: 5vw 4vw 4vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--sandstone-hairline);
+      min-width: 0;
+    }
+
+    .manifesto-kicker {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      color: var(--gold-ochre);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .manifesto-display-h2 {
+      font-family: var(--font-editorial);
+      font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 0.85rem;
+      color: var(--raw-stone);
+      font-weight: 400;
+    }
+
+    .manifesto-urdu-verse {
+      font-family: var(--font-urdu);
+      font-size: 1.15rem;
+      color: var(--gold-ochre);
+      margin-bottom: 1.35rem;
+      display: block;
+      line-height: 2.2;
+    }
+
+    .manifesto-dek-copy {
+      max-width: 520px;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      font-weight: 300;
+      color: var(--muted-smoke);
+      margin-bottom: 2rem;
+    }
+
+    .curation-panel {
+      border-top: 1px solid var(--sandstone-hairline);
+      padding-top: 1.6rem;
+      margin-top: 3rem;
+    }
+
+    .curation-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.85rem;
+      color: var(--raw-stone);
+    }
+
+    .curation-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 1.8rem;
+    }
+
+    .curation-tab-btn {
+      position: relative;
+      border: 1px solid var(--sandstone-hairline);
+      background: transparent;
+      padding: 9px 15px;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      font-weight: 300;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--raw-stone);
+      transition:
+        color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        background-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .curation-tab-btn:hover {
+      border-color: var(--raw-stone);
+      background: rgba(255, 255, 255, 0.65);
+      transform: translateY(-1px);
+    }
+
+    .curation-tab-btn.active {
+      border-color: var(--raw-stone);
+      background: var(--surface-pure);
+      font-weight: 500;
+    }
+
+    .curation-color-pip {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: 0 0 7px;
+    }
+
+    .curation-action-wrap {
+      margin-top: 0.25rem;
+    }
+
+    .manifesto-visual-pane {
+      position: relative;
+      background: #E7E0D3;
+      overflow: hidden;
+      width: 100%;
+      min-height: 620px;
+    }
+
+    .atelier-image-trio {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 620px;
+      overflow: hidden;
+    }
+
+    .atelier-trio-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.035);
+      transition:
+        opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 1.1s cubic-bezier(0.16, 1, 0.3, 1),
+        visibility 0.7s ease;
+    }
+
+    .atelier-trio-image.is-selected {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    .atelier-trio-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .atelier-trio-image.is-selected img {
+      transform: scale(1.015);
+      transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .atelier-image-caption {
+      position: absolute;
+      left: 2rem;
+      right: 2rem;
+      bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.35);
+      color: #FFFFFF;
+      opacity: 0;
+      transform: translateY(10px);
+      transition:
+        opacity 0.6s ease 0.15s,
+        transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+    }
+
+    .atelier-trio-image.is-selected .atelier-image-caption {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .atelier-image-number {
+      font-family: var(--font-display);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      opacity: 0.75;
+    }
+
+    .atelier-image-title {
+      font-family: var(--font-editorial);
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+    }
+
+    @media (max-width: 991px) {
+      .manifesto-split-stage {
+        grid-template-columns: 1fr;
+      }
+
+      .manifesto-editorial-pane {
+        border-right: none;
+        border-bottom: 1px solid var(--sandstone-hairline);
+        padding: 4rem 6vw 3.5rem;
+      }
+
+      .manifesto-visual-pane,
+      .atelier-image-trio {
+        min-height: 620px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .manifesto-display-h2 {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+      }
+
+      .curation-tabs {
+        gap: 7px;
+      }
+
+      .curation-tab-btn {
+        font-size: 0.66rem;
+        padding: 8px 12px;
+      }
+
+      .manifesto-visual-pane,
+      .atelier-image-trio {
+        min-height: 560px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .manifesto-editorial-pane {
+        padding: 3.5rem 5vw 3rem;
+      }
+
+      .manifesto-kicker {
+        font-size: 0.58rem;
+        letter-spacing: 0.22em;
+      }
+
+      .manifesto-display-h2 {
+        font-size: 2rem;
+      }
+
+      .manifesto-urdu-verse {
+        font-size: 1rem;
+      }
+
+      .manifesto-dek-copy {
+        font-size: 0.86rem;
+      }
+
+      .curation-panel {
+        margin-top: 2.5rem;
+      }
+
+      .curation-tabs {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .curation-tab-btn {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 11px 13px;
+      }
+
+      .curation-action-wrap {
+        margin-top: 1rem;
+      }
+
+      .manifesto-visual-pane,
+      .atelier-image-trio {
+        min-height: 500px;
+      }
+
+      .atelier-image-caption {
+        left: 1.2rem;
+        right: 1.2rem;
+        bottom: 1.2rem;
+      }
+
+      .atelier-image-title {
+        font-size: 0.82rem;
+      }
+    }
+
+    /* Capsules */
+    .capsule-card { position: relative; overflow: hidden; aspect-ratio: 3/4.2; background: #E8E5DF; cursor: pointer; }
+    .capsule-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .capsule-card:hover img { transform: scale(1.05); }
+    .capsule-card-overlay {
+      position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,12,11,0.06) 45%, rgba(13,12,11,0.88) 100%);
+      display: flex; flex-direction: column; justify-content: flex-end; padding: 1.8rem; color: #FFFFFF;
+    }
+    .btn-subtle-archive {
+      font-family: var(--font-display); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--raw-stone); text-decoration: none; border-bottom: 1px solid var(--gold-ochre); padding-bottom: 2px;
+    }
+
+    /* Core Catalog */
+    .luxury-product-card { position: relative; margin-bottom: 2rem; }
+    .product-media { position: relative; overflow: hidden; aspect-ratio: 3/4.2; background: #EAE6DF; }
+    .product-media img {
+      width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;
+      transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-img-back { opacity: 0; }
+    .luxury-product-card:hover .product-img-back { opacity: 1; transform: scale(1.03); }
+    .luxury-product-card:hover .product-img-front { opacity: 0; }
+    .badge-run {
+      position: absolute; top: 12px; left: 12px; font-size: 0.58rem; letter-spacing: 0.18em;
+      text-transform: uppercase; padding: 4px 9px; background: var(--surface-pure); font-weight: 600; z-index: 4;
+    }
+    .wishlist-pill {
+      position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255, 255, 255, 0.92); border: none; display: flex; align-items: center; justify-content: center;
+      z-index: 4; cursor: pointer; transition: var(--transition-editorial);
+    }
+    .wishlist-pill.active { color: #A03E2D; }
+
+    /* Floating Catalog Slide-up Action */
+    .btn-slide-select {
+      position: absolute; bottom: 0; left: 0; right: 0; 
+      background: var(--raw-stone); color: #FFFFFF;
+      padding: 13px 0; font-size: 0.68rem; letter-spacing: 0.22em; 
+      text-transform: uppercase; font-family: var(--font-display); font-weight: 600;
+      border: none;
+      transform: translateY(100%); 
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                  background-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                  letter-spacing 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+      cursor: pointer; z-index: 5;
+    }
+    .luxury-product-card:hover .btn-slide-select { transform: translateY(0); }
+    .btn-slide-select:hover { 
+      background: var(--gold-ochre); 
+      letter-spacing: 0.26em;
+    }
+
+    .catalog-filter-btn {
+      background: transparent; border: none; border-bottom: 2px solid transparent; font-size: 0.72rem;
+      letter-spacing: 0.22em; text-transform: uppercase; padding: 7px 16px; color: var(--muted-smoke); cursor: pointer;
+    }
+    .catalog-filter-btn.active { color: var(--raw-stone); border-bottom-color: var(--gold-ochre); font-weight: 600; }
+
+    /* =============================================================
+       NAQSH DRIFT GALLERY: SLOW MOTION CONTINUOUS SLIDING CARDS
+       ============================================================= */
+    .naqsh-carousel-section {
+      background-color: var(--sandstone-deep);
+      border-top: 1px solid var(--sandstone-hairline);
+      border-bottom: 1px solid var(--sandstone-hairline);
+      padding: 6.5rem 0 7rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .naqsh-header-deck {
+      margin-bottom: 3.5rem;
+    }
+    .naqsh-header-deck .brand-kicker {
+      font-family: var(--font-display);
+      font-size: 0.66rem;
+      letter-spacing: 0.32em;
+      color: var(--gold-ochre);
+      text-transform: uppercase;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 0.5rem;
+    }
+
+    .carousel-nav-btn {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--sandstone-hairline);
+      background: var(--surface-pure);
+      color: var(--raw-stone);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-editorial);
+    }
+    .carousel-nav-btn:hover {
+      background: var(--raw-stone);
+      border-color: var(--raw-stone);
+      color: #FFFFFF;
+    }
+
+    .naqsh-stream-viewport {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+      padding: 1.5rem 0 2rem;
+    }
+    .naqsh-stream-viewport:active {
+      cursor: grabbing;
+    }
+
+    .naqsh-stream-viewport::before,
+    .naqsh-stream-viewport::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 8vw;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .naqsh-stream-viewport::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--sandstone-deep) 0%, rgba(239, 233, 223, 0) 100%);
+    }
+    .naqsh-stream-viewport::after {
+      right: 0;
+      background: linear-gradient(270deg, var(--sandstone-deep) 0%, rgba(239, 233, 223, 0) 100%);
+    }
+
+    .naqsh-stream-track {
+      display: flex;
+      gap: 2.2rem;
+      width: max-content;
+      will-change: transform;
+      animation: slowMotionDrift 60s linear infinite;
+    }
+    .naqsh-stream-viewport:hover .naqsh-stream-track {
+      animation-play-state: paused;
+    }
+
+    @keyframes slowMotionDrift {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .naqsh-drift-card {
+      width: clamp(280px, 24vw, 360px);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-pure);
+      border: 1px solid var(--sandstone-hairline);
+      box-shadow: 0 10px 30px rgba(21, 19, 17, 0.04);
+      transition: var(--transition-editorial);
+    }
+    .naqsh-drift-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 45px rgba(21, 19, 17, 0.1);
+      border-color: var(--raw-stone);
+    }
+
+    .naqsh-drift-image-frame {
+      width: 100%;
+      aspect-ratio: 3/4.2;
+      overflow: hidden;
+      background: #E5DFD4;
+      position: relative;
+    }
+    .naqsh-drift-image-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .naqsh-drift-card:hover .naqsh-drift-image-frame img {
+      transform: scale(1.06);
+    }
+
+    .naqsh-drift-meta {
+      padding: 1.4rem 1.6rem;
+      background: var(--surface-pure);
+      border-top: 1px solid var(--sandstone-hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .drift-provenance-tag {
+      font-family: var(--font-display);
+      font-size: 0.58rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold-ochre);
+      font-weight: 600;
+    }
+    .drift-piece-title {
+      font-family: var(--font-editorial);
+      font-size: 1.18rem;
+      font-weight: 500;
+      color: var(--raw-stone);
+      margin: 0;
+      line-height: 1.25;
+    }
+    .drift-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--sandstone-hairline);
+    }
+    .drift-price {
+      font-family: var(--font-editorial);
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--raw-stone);
+    }
+
+    .drift-select-btn {
+      position: relative;
+      background: transparent;
+      border: 1px solid var(--sandstone-hairline);
+      color: var(--raw-stone);
+      font-family: var(--font-display);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 0.5rem 1.3rem;
+      cursor: pointer;
+      overflow: hidden;
+      isolation: isolate;
+      transition: var(--transition-editorial);
+    }
+    .drift-select-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--raw-stone);
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: -1;
+    }
+    .drift-select-btn:hover {
+      color: #FFFFFF;
+      border-color: var(--raw-stone);
+      letter-spacing: 0.22em;
+    }
+    .drift-select-btn:hover::before {
+      transform: translateY(0);
+    }
+
+    /* Patron Chronicles */
+    .circle-ahl-zauq-section { background-color: var(--surface-pure); border-top: 1px solid var(--sandstone-hairline); border-bottom: 1px solid var(--sandstone-hairline); padding: 6.5rem 0; }
+    .ahl-zauq-card {
+      background: var(--canvas-warm); border: 1px solid var(--sandstone-hairline); padding: 2.6rem 2.2rem 2rem;
+      height: 100%; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition-editorial);
+    }
+    .ahl-zauq-card:hover { border-color: var(--raw-stone); box-shadow: 0 14px 34px rgba(13, 12, 11, 0.05); transform: translateY(-4px); }
+    .quote-sigil { font-family: var(--font-editorial); font-size: 3.2rem; line-height: 1; color: var(--gold-ochre); opacity: 0.5; margin-bottom: 0.4rem; }
+    .ahl-zauq-quote { font-family: var(--font-editorial); font-style: italic; font-size: 1.05rem; line-height: 1.7; color: var(--raw-stone); margin-bottom: 2rem; }
+    .ahl-zauq-patron { border-top: 1px solid var(--sandstone-hairline); padding-top: 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+    .patron-name { font-family: var(--font-display); font-size: 0.74rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; color: var(--raw-stone); }
+    .patron-city { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted-smoke); }
+
+    /* Instagram Lookbook */
+    .insta-square { position: relative; overflow: hidden; aspect-ratio: 1/1; display: block; }
+    .insta-square img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .insta-square:hover img { transform: scale(1.06); }
+
+    /* Cart Offcanvas */
+    .offcanvas-atelier-bag { background: var(--canvas-warm); width: 440px !important; max-width: 90vw; }
+    .qty-counter-btn {
+      width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center;
+      background: transparent; border: none; font-size: 0.85rem; cursor: pointer; color: var(--raw-stone);
+    }
+    .qty-counter-btn:hover { background-color: var(--sandstone-hairline); }
+
+    .toast-editorial {
+      position: fixed; bottom: 24px; right: 24px; background: var(--raw-stone); color: #FFFFFF;
+      border-left: 3px solid var(--gold-ochre); padding: 15px 22px; z-index: 2100; transform: translateY(120px);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast-editorial.visible { transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Ribbon -->
+  <aside class="top-utility-ribbon" aria-label="Shipping announcement">
+    <div class="container-fluid px-lg-5">
+      <div class="row align-items-center">
+        <div class="col-md-5 d-none d-md-block">
+          <span>ZAUK DISPATCH  MULTAN / ALL OVER PK</span>
+        </div>
+        <div class="col-md-5 text-center text-md-start">
+          <span>COMPLIMENTARY CONCIERGE DELIVERY OVER PKR 7,500 | COD AVAILABLE NATIONWIDE</span>
+        </div>
+        <div class="col-md-2 text-end d-flex justify-content-end align-items-center">
+          <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="insta-icon" title="Visit Zauk on Instagram">
+            <i class="bi bi-instagram"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Site Header -->
+  <header class="site-header border-b-subtle" id="siteHeader">
+    <div class="container-fluid px-lg-5 py-3">
+      <div class="row align-items-center">
+        
+        <!-- Left: 3-Bar Hamburger Menu Trigger -->
+        <div class="col-4 d-flex align-items-center">
+          <button class="menu-trigger-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#categoriesDrawer" aria-controls="categoriesDrawer" aria-label="Toggle navigation categories">
+            <span class="menu-trigger-bars">
+              <span class="menu-bar-line"></span>
+              <span class="menu-bar-line"></span>
+              <span class="menu-bar-line"></span>
+            </span>
+            <span class="menu-trigger-text d-none d-sm-inline">Menu</span>
+          </button>
+        </div>
+
+        <!-- Center: Pure Image Logo -->
+        <div class="col-4 text-center">
+          <a href="#" class="brandmark-center" aria-label="ZAUK Home">
+            <!-- Replace 'src' with your logo file path (e.g. assets/logo.png, assets/logo.svg) -->
+            <img src="./public/logo.png" alt="ZAUK Logo" class="brand-logo-img">
+          </a>
+        </div>
+
+        <!-- Right: Utility Suite -->
+        <div class="col-4 text-end d-flex align-items-center justify-content-end gap-3 gap-lg-4">
+          <button class="bg-transparent border-0 p-0 text-dark" id="searchTriggerBtn" title="Search catalogue" data-bs-toggle="modal" data-bs-target="#searchModal" aria-label="Open search modal">
+            <i class="bi bi-search fs-6"></i>
+          </button>
+          
+          <button class="bg-transparent border-0 p-0 text-dark position-relative" id="wishlistTriggerBtn" title="Saved looks" aria-label="View wishlist">
+            <i class="bi bi-heart fs-6"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-dark" style="font-size: 0.5rem;" id="wishlistCountBadge">0</span>
+          </button>
+
+          <button class="bg-transparent border-0 p-0 text-dark position-relative" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Shopping Bag" aria-label="Open shopping bag">
+            <i class="bi bi-bag fs-6"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill" style="font-size: 0.5rem; background: var(--gold-ochre);" id="cartCountBadge">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Categories Drawer -->
+  <div class="offcanvas offcanvas-start offcanvas-categories" tabindex="-1" id="categoriesDrawer" aria-labelledby="categoriesDrawerLabel">
+    <div class="offcanvas-header border-b-subtle p-4">
+      <div>
+        <!-- Offcanvas Pure Image Logo -->
+      <img src="./public/logo.png" alt="ZAUK Logo" class="drawer-logo-img mb-1" id="categoriesDrawerLabel">
+      </div>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between p-4">
+      <nav class="d-flex flex-column">
+        <a href="#hero-cinema" class="category-nav-item" data-bs-dismiss="offcanvas">
+          <span>Campaign Film</span>
+          <span class="category-nav-num">01</span>
+        </a>
+        <a href="#manifesto" class="category-nav-item" data-bs-dismiss="offcanvas">
+          <span>The Edit &amp; Philosophy</span>
+          <span class="category-nav-num">02</span>
+        </a>
+        <a href="#collections" class="category-nav-item" data-bs-dismiss="offcanvas">
+          <span>Dupattas &amp; Shawls</span>
+          <span class="category-nav-num">03</span>
+        </a>
+        <a href="#pret-showcase" class="category-nav-item" data-bs-dismiss="offcanvas">
+          <span>Zauk Collection</span>
+          <span class="category-nav-num">04</span>
+        </a>
+        <a href="#craft" class="category-nav-item" data-bs-dismiss="offcanvas">
+          <span>Artisanal Provenance</span>
+          <span class="category-nav-num">05</span>
+        </a>
+        <a href="#naqsh" class="category-nav-item" data-bs-dismiss="offcanvas">
+          <span>Naqsh Masterworks</span>
+          <span class="category-nav-num">06</span>
+        </a>
+        <a href="#circle-ahl-zauq" class="category-nav-item" data-bs-dismiss="offcanvas">
+          <span>The Circle of Ahl-e-Zauq</span>
+          <span class="category-nav-num">07</span>
+        </a>
+      </nav>
+
+      <div class="border-t-subtle pt-4 mt-4">
+        <p class="font-brand text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.24em; color: var(--gold-ochre);">Direct Concierge Inquiries</p>
+        <p class="small mb-1 font-ui">concierge@zauk.pk</p>
+        <p class="small text-muted font-ui">+92 (061) 458-9122</p>
+        <p class="small text-muted font-ui mt-2">Delivery Nationwide all over 🇵🇰</p>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- Section 1: Hero -->
+    <section class="hero-cinematic-stage" id="hero-cinema" aria-label="Campaign Film Hero">
+     <video
+  class="hero-video-bg"
+  id="heroVideoElement"
+  autoplay
+  muted
+  loop
+  playsinline
+>
+  <source src="./public/intro.mp4" type="video/mp4">
+</video>
+      <div class="hero-cinematic-scrim"></div>
+      <div class="hero-bottom-left-deck">
+        <h1 class="hero-title-minimal">The Poetry of <em>Restraint</em></h1>
+        <div class="hero-urdu-minimal" dir="rtl">احساس سے بُنے حجاب اور ذوق سے چنے تحفے</div>
+        <a href="#pret-showcase" class="btn-hero-single">SHOP NOW</a>
+      </div>
+    </section>
+
+    <!-- Partition -->
+    <div class="hero-architectural-partition">
+      <div class="partition-line-wrap">
+        <div class="partition-line"></div>
+        <div class="partition-emblem">
+          <span>ZAUK ATELIER</span>
+          <span>•</span>
+          <span>EST. MULTAN</span>
+        </div>
+        <div class="partition-line"></div>
+      </div>
+    </div>
+
+    <!-- Section 2: Manifesto & Signature Fabric Profiles -->
+    <section class="curation-manifesto-section" id="manifesto" aria-label="Collection Curation and Manifesto">
+      <div class="manifesto-split-stage">
+
+        <div class="manifesto-editorial-pane">
+
+          <div>
+            <span class="manifesto-kicker">SHOPPING &amp; RETAIL // ATELIER MULTAN</span>
+
+            <h2 class="manifesto-display-h2">
+              For those with an inherent discernment for purity.
+            </h2>
+
+            <div class="manifesto-urdu-verse" dir="rtl">
+              حیا کا تقدس، سادگی کا حسن — جہاں ہر دھاگہ وقار کی تفسیر بنتا ہے
+            </div>
+
+            <p class="manifesto-dek-copy">
+              At ZAUK, a wrap is not merely fabric—it is an intimate canopy of dignity,
+              softness, and emotion. We source unadulterated pure mulberry silks,
+              hand-loomed chanderi, and double-twisted modal weaves to curate modest wear
+              crafted with generational poise.
+            </p>
+          </div>
+
+          <div class="curation-panel">
+
+            <div class="curation-label">
+              Signature Fabric Profiles
+            </div>
+
+            <div class="curation-tabs" role="tablist" aria-label="Signature Fabric Profiles">
+
+              <button
+                type="button"
+                class="curation-tab-btn active"
+                onclick="selectHeroEnsemble(this, 0)"
+                role="tab"
+                aria-selected="true"
+                aria-controls="atelier-image-0"
+              >
+                <span class="curation-color-pip" style="background-color: #B86B53;"></span>
+                <span>01. Snow White</span>
+              </button>
+
+              <button
+                type="button"
+                class="curation-tab-btn"
+                onclick="selectHeroEnsemble(this, 1)"
+                role="tab"
+                aria-selected="false"
+                aria-controls="atelier-image-1"
+              >
+                <span class="curation-color-pip" style="background-color: #4B5342;"></span>
+                <span>02. Chocolate Brown</span>
+              </button>
+
+              <button
+                type="button"
+                class="curation-tab-btn"
+                onclick="selectHeroEnsemble(this, 2)"
+                role="tab"
+                aria-selected="false"
+                aria-controls="atelier-image-2"
+              >
+                <span class="curation-color-pip" style="background-color: #E2DDD5;"></span>
+                <span>03. Pale Dogwood</span>
+              </button>
+
+            </div>
+
+            <div class="mt-4">
+              <button
+                type="button"
+                class="btn-zauk-action"
+                id="heroAcquireBtn"
+                onclick="quickAddToCart('ZK-01')"
+              >
+                Add to Bag
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="manifesto-visual-pane" aria-label="Zauk Atelier visual archive">
+          <div class="atelier-image-trio">
+
+            <div
+              class="atelier-trio-image is-selected"
+              id="atelier-image-0"
+              data-atelier-image="0"
+              role="tabpanel"
+              aria-hidden="false"
+            >
+              <img
+                src="./public/image1.jpeg"
+                alt="Snow White"
+                loading="eager"
+                decoding="async"
+              >
+
+              <div class="atelier-image-caption">
+                
+                <span class="atelier-image-title"></span>
+              </div>
+            </div>
+
+            <div
+              class="atelier-trio-image"
+              id="atelier-image-1"
+              data-atelier-image="1"
+              role="tabpanel"
+              aria-hidden="true"
+            >
+              <img
+                src="./public/image2.jpeg"
+                alt="Chocolate Brown"
+                loading="lazy"
+                decoding="async"
+              >
+
+              <div class="atelier-image-caption">
+                
+                <span class="atelier-image-title"></span>
+              </div>
+            </div>
+
+            <div
+              class="atelier-trio-image"
+              id="atelier-image-2"
+              data-atelier-image="2"
+              role="tabpanel"
+              aria-hidden="true"
+            >
+              <img
+                src="./public/image3.jpeg"
+                alt="Pale Dogwood"
+                loading="lazy"
+                decoding="async"
+              >
+
+              <div class="atelier-image-caption">
+                
+                <span class="atelier-image-title"></span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Capsules -->
+    <section class="py-5 my-4" id="collections">
+      <div class="container-fluid px-lg-5">
+        <div class="row align-items-end mb-4 pb-2 border-b-subtle">
+          <div class="col-md-8">
+            <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.28em; color: var(--gold-ochre); text-transform: uppercase;">Curated Signatures</span>
+            <h2 class="font-editorial fs-1 fw-normal mb-0 mt-1">Dupattas, Shawls &amp; Gift Boxes</h2>
+          </div>
+          <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <a href="#pret-showcase" class="btn-subtle-archive">View All Products</a>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-6 col-lg-3">
+            <div class="capsule-card" onclick="filterProducts('hijab')">
+              <img src="./public/image8.jpeg" alt="Pure Silk & Modal Hijabs">
+              <div class="capsule-card-overlay">
+                <span class="font-brand" style="font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.85;"></span>
+                <h3 class="font-editorial fs-5 mb-1"> Modal Hijabs</h3>
+                <span class="small font-ui" style="font-size: 0.75rem; opacity: 0.8;">Shop Collection →</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="capsule-card" onclick="filterProducts('dupatta')">
+              <img src="./public/image9.jpeg" alt="Hand-worked Dupattas">
+              <div class="capsule-card-overlay">
+                <span class="font-brand" style="font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.85;"></span>
+                <h3 class="font-editorial fs-5 mb-1">Dupattas</h3>
+                <span class="small font-ui" style="font-size: 0.75rem; opacity: 0.8;">Shop Collection →</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="capsule-card" onclick="filterProducts('shawl')">
+              <img src="./public/image6.jpeg" alt="Heirloom Shawls">
+              <div class="capsule-card-overlay">
+                <span class="font-brand" style="font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.85;"></span>
+                <h3 class="font-editorial fs-5 mb-1">Hijabs</h3>
+                <span class="small font-ui" style="font-size: 0.75rem; opacity: 0.8;">Shop Collection →</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="capsule-card" onclick="filterProducts('gift')">
+              <img src="./public/image7.jpeg" alt="Bespoke Gift Boxes">
+              <div class="capsule-card-overlay">
+                <span class="font-brand" style="font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.85;"></span>
+                <h3 class="font-editorial fs-5 mb-1">ذوق تحائف | Gift Boxes</h3>
+                <span class="small font-ui" style="font-size: 0.75rem; opacity: 0.8;">Shop Collection →</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Zauk Collection Catalog -->
+    <section class="py-5" id="pret-showcase">
+      <div class="container-fluid px-lg-5">
+        <div class="text-center mb-5">
+          <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.26em; color: var(--gold-ochre); text-transform: uppercase;">Ahl-e-Zauq Curation</span>
+          <h2 class="font-editorial fs-1 mt-1 mb-2">Zauk Collection</h2>
+          <p class="text-muted mx-auto font-ui" style="max-width: 600px; font-size: 0.9rem;">
+            Woven in limited batches using natural fiber blends. Delivered in our signature scented mulmul sleeves nationwide.
+          </p>
+
+          <div class="d-flex flex-wrap justify-content-center gap-2 mt-4" id="categoryFilterContainer">
+            <button class="catalog-filter-btn active" onclick="filterProducts('all')">All Products [08]</button>
+            <button class="catalog-filter-btn" onclick="filterProducts('hijab')">Modal &amp; Hijabs</button>
+            <button class="catalog-filter-btn" onclick="filterProducts('dupatta')">Embroidered Dupattas</button>
+            <button class="catalog-filter-btn" onclick="filterProducts('shawl')">Heritage Shawls</button>
+            <button class="catalog-filter-btn" onclick="filterProducts('gift')">Bespoke Gift Boxes</button>
+          </div>
+        </div>
+
+        <div class="row g-4" id="productsGridContainer">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Brand Pillars -->
+    <section class="py-5 border-t-subtle border-b-subtle bg-white">
+      <div class="container-fluid px-lg-5">
+        <div class="row g-4 text-center">
+          <div class="col-6 col-lg-3">
+            <i class="bi bi-patch-check fs-3 mb-2 d-inline-block text-dark"></i>
+            <h4 class="font-brand fs-6 text-uppercase mb-1" style="letter-spacing: 0.16em;">Natural Weaves</h4>
+            <p class="text-muted small mb-0 font-ui">Certified raw mulberry silks, organza and double-twisted cotton.</p>
+          </div>
+          <div class="col-6 col-lg-3">
+            <i class="bi bi-scissors fs-3 mb-2 d-inline-block text-dark"></i>
+            <h4 class="font-brand fs-6 text-uppercase mb-1" style="letter-spacing: 0.16em;">Bespoke Fitting</h4>
+            <p class="text-muted small mb-0 font-ui">Virtual sizing consultations with our Multan master cutters.</p>
+          </div>
+          <div class="col-6 col-lg-3">
+            <i class="bi bi-truck fs-3 mb-2 d-inline-block text-dark"></i>
+            <h4 class="font-brand fs-6 text-uppercase mb-1" style="letter-spacing: 0.16em;">Doorstep COD</h4>
+            <p class="text-muted small mb-0 font-ui">Verified cash-on-delivery across 180+ domestic cities.</p>
+          </div>
+          <div class="col-6 col-lg-3">
+            <i class="bi bi-globe-americas fs-3 mb-2 d-inline-block text-dark"></i>
+            <h4 class="font-brand fs-6 text-uppercase mb-1" style="letter-spacing: 0.16em;">Global Express</h4>
+            <p class="text-muted small mb-0 font-ui">Direct door-to-door insured air dispatch via DHL Express.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Provenance -->
+    <section class="py-5 my-5 border-t-subtle border-b-subtle" id="craft" style="background: var(--sandstone-deep);">
+      <div class="container-fluid px-lg-5 py-lg-4">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.28em; color: var(--gold-ochre); text-transform: uppercase;">Material Integrity &amp; Provenance</span>
+            <h2 class="font-editorial display-6 mb-4">Crafting for the Ahl-e-Zauq</h2>
+            <p class="text-muted mb-4 font-ui" style="font-size: 0.92rem;">
+              We partner directly with heritage needlecraft families across Multan, Bahawalpur, and interior Sindh. Preserving delicate shadow-work, hand-pulled needle jaal, and pure zari wire finishes that commercial machines cannot replicate with soul.
+            </p>
+
+            <div class="craft-spec-divider border-b-subtle pb-3 mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="font-editorial fs-5 fw-bold">Unadulterated Natural Fibers</span>
+                <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.15em;">PURE WEAVES ONLY</span>
+              </div>
+              <p class="small text-muted mb-0 mt-1 font-ui">Mulberry raw silk, certified modal, indigenous handloom khadi, and pima cotton.</p>
+            </div>
+
+            <div class="craft-spec-divider border-b-subtle pb-3 mb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="font-editorial fs-5 fw-bold">The Trousseau Gift Box Charter</span>
+                <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.15em;">HANDMADE KEEPSAKES</span>
+              </div>
+              <p class="small text-muted mb-0 mt-1 font-ui">Custom velvet boxes embossed with gold calligraphy, personalized wax seals, and curated cards.</p>
+            </div>
+
+            <div class="craft-spec-divider">
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="font-editorial fs-5 fw-bold">Guaranteed Delivery Across PK</span>
+                <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.15em;">COD ALL CITIES</span>
+              </div>
+              <p class="small text-muted mb-0 mt-1 font-ui">Door-to-door express parcel tracked with verified inspection rights upon delivery.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+  <div
+    class="position-relative overflow-hidden shadow-sm"
+    style="height: 500px; background: #e8e2d8;"
+  >
+    <img
+      src="./public/image12.jpeg"
+      alt="Tailoring craftsmanship at Zauk Atelier"
+      class="w-100 h-100 d-block"
+      style="
+        object-fit: contain;
+        object-position: center;
+      "
+    >
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =============================================================
+         NAQSH: SLOW-MOTION INFINITE DRIFT GALLERY
+         ============================================================= -->
+    <section class="naqsh-carousel-section" id="naqsh" aria-label="Naqsh Masterworks Continuous Gallery">
+      <div class="container-fluid px-lg-5">
+        
+        <div class="row align-items-end justify-content-between naqsh-header-deck pb-3 border-b-subtle">
+          <div class="col-md-8">
+            <span class="brand-kicker">HAUTE NEEDLECRAFT FOLIO • EDITION 2026</span>
+            <h2 class="font-editorial fs-1 fw-normal mb-1">Naqsh: The Continuous Drift</h2>
+            <p class="text-muted font-ui small mb-0">Pure silk, delicate shadow-work, and antique Multani needlecraft drifting with generational poise.</p>
+          </div>
+          <div class="col-md-4 text-md-end mt-3 mt-md-0 d-flex justify-content-md-end gap-2">
+            <button class="carousel-nav-btn" onclick="nudgeDrift('left')" aria-label="Nudge carousel left">
+              <i class="bi bi-arrow-left"></i>
+            </button>
+            <button class="carousel-nav-btn" onclick="nudgeDrift('right')" aria-label="Nudge carousel right">
+              <i class="bi bi-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="naqsh-stream-viewport" id="naqshViewport">
+        <div class="naqsh-stream-track" id="naqshStreamTrack">
+          
+          <!-- Card 01 -->
+          <div class="naqsh-drift-card">
+            <div class="naqsh-drift-image-frame">
+              <img src="./public/image18.jpeg" alt="Naqsh Pure Work" loading="lazy">
+            </div>
+            <div class="naqsh-drift-meta">
+              <span class="drift-provenance-tag">STUDY 01 • ORGANZA TILLA</span>
+              <h3 class="drift-piece-title">The Zari Jaal Organza Dupatta</h3>
+              <div class="drift-card-footer">
+                <span class="drift-price">PKR 18,500</span>
+                <button class="drift-select-btn" onclick="quickAddToCart('ZK-03')">
+                  Add to Bag
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 02 -->
+          <div class="naqsh-drift-card">
+            <div class="naqsh-drift-image-frame">
+              <img src="./public/image17.jpeg" alt="Naqsh Pure Work" loading="lazy">
+            </div>
+            <div class="naqsh-drift-meta">
+              <span class="drift-provenance-tag">STUDY 02 • MULBERRY WEAVE</span>
+              <h3 class="drift-piece-title">Raw Silk Multani Hijab</h3>
+              <div class="drift-card-footer">
+                <span class="drift-price">PKR 4,850</span>
+                <button class="drift-select-btn" onclick="quickAddToCart('ZK-01')">
+                  Add to Bag
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 03 -->
+          <div class="naqsh-drift-card">
+            <div class="naqsh-drift-image-frame">
+              <img src="./public/image16.jpeg" alt="Naqsh Pure Work" loading="lazy">
+            </div>
+            <div class="naqsh-drift-meta">
+              <span class="drift-provenance-tag">STUDY 03 • HERITAGE AARI</span>
+              <h3 class="drift-piece-title">Multani Aari Woolen Shawl</h3>
+              <div class="drift-card-footer">
+                <span class="drift-price">PKR 26,500</span>
+                <button class="drift-select-btn" onclick="quickAddToCart('ZK-04')">
+                  Add to Bag
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 04 -->
+          <div class="naqsh-drift-card">
+            <div class="naqsh-drift-image-frame">
+              <img src="./public/image15.jpeg" alt="Naqsh Pure Work" loading="lazy">
+            </div>
+            <div class="naqsh-drift-meta">
+              <span class="drift-provenance-tag">STUDY 04 • VELVET SUITE</span>
+              <h3 class="drift-piece-title">Royal Trousseau Keepsake Box</h3>
+              <div class="drift-card-footer">
+                <span class="drift-price">PKR 22,000</span>
+                <button class="drift-select-btn" onclick="quickAddToCart('ZK-05')">
+                  Add to Bag
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 05 -->
+          <div class="naqsh-drift-card">
+            <div class="naqsh-drift-image-frame">
+              <img src="./public/image14.jpeg" alt="Naqsh Pure Work" loading="lazy">
+            </div>
+            <div class="naqsh-drift-meta">
+              <span class="drift-provenance-tag">STUDY 05 • 80-COUNT CHANDERI</span>
+              <h3 class="drift-piece-title">Chanderi Scalloped Chador</h3>
+              <div class="drift-card-footer">
+                <span class="drift-price">PKR 19,800</span>
+                <button class="drift-select-btn" onclick="quickAddToCart('ZK-06')">
+                  Add to Bag
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 06 -->
+          <div class="naqsh-drift-card">
+            <div class="naqsh-drift-image-frame">
+              <img src="./public/image19.jpeg" alt="Naqsh Pure Work" loading="lazy">
+            </div>
+            <div class="naqsh-drift-meta">
+              <span class="drift-provenance-tag">STUDY 06 • EMBROIDERED MODAL</span>
+              <h3 class="drift-piece-title">Modal Silk Floret Wrap</h3>
+              <div class="drift-card-footer">
+                <span class="drift-price">PKR 5,800</span>
+                <button class="drift-select-btn" onclick="quickAddToCart('ZK-02')">
+                  Add to Bag
+                </button>
+              </div>
+            </div>
+          </div>
+
+        
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Lookbook Grid -->
+    <section class="py-5" id="instagram-wall">
+      <div class="container-fluid px-lg-5 mb-4 text-center">
+        <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.28em; color: var(--gold-ochre); text-transform: uppercase;">Visual Archive</span>
+        <h2 class="font-editorial fs-2 mt-1 mb-1">Seen on the #ZaukWoman</h2>
+        <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="text-muted text-decoration-none font-ui" style="font-size: 0.74rem; letter-spacing: 0.16em;">
+          @ZAUK.PK • CONCIERGE LOOKBOOK
+        </a>
+      </div>
+
+      <div class="container-fluid px-0">
+        <div class="row g-1">
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="insta-square">
+              <img src="./public/image10.jpeg" alt="Zauk Woman Look 01">
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="insta-square">
+              <img src="./public/image23.jpeg" alt="Zauk Woman Look 02">
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="insta-square">
+              <img src="./public/image25.jpeg" alt="Zauk Woman Look 03">
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="insta-square">
+              <img src="./public/image20.jpeg" alt="Zauk Woman Look 04">
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="insta-square">
+              <img src="./public/image21.jpeg" alt="Zauk Woman Look 05">
+            </a>
+          </div>
+          <div class="col-6 col-md-4 col-lg-2">
+            <a href="https://instagram.com/zauk.pk" target="_blank" rel="noopener" class="insta-square">
+              <img src="./public/image22.jpeg" alt="Zauk Woman Look 06">
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Patron Chronicles -->
+    <section class="circle-ahl-zauq-section" id="circle-ahl-zauq" aria-label="Patron Chronicles">
+      <div class="container-fluid px-lg-5">
+        <div class="row align-items-end mb-5 pb-3 border-b-subtle">
+          <div class="col-md-8">
+            <span class="font-brand" style="font-size: 0.65rem; letter-spacing: 0.3em; color: var(--gold-ochre); text-transform: uppercase;">Patron Chronicles</span>
+            <h2 class="font-editorial fs-1 fw-normal mb-1">The Circle of Ahl-e-Zauq</h2>
+            <p class="text-muted font-ui small mb-0">Reflections from women across Pakistan on our hijabs, dupattas, and bespoke trousseau gift boxes.</p>
+          </div>
+          <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <span class="font-brand text-muted" style="font-size: 0.68rem; letter-spacing: 0.22em;">VERIFIED ATELIER PATRONS</span>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6 col-lg-3">
+            <div class="ahl-zauq-card">
+              <div>
+                <div class="quote-sigil">“</div>
+                <p class="ahl-zauq-quote">The modal silk hijab stays completely in place without pins pulling the fabric. The drape has an unmistakable weight of luxury.</p>
+              </div>
+              <div class="ahl-zauq-patron">
+                <div>
+                  <span class="patron-name d-block">Fatima Noor Abbasi</span>
+                  <span class="patron-city">Gulberg, Lahore</span>
+                </div>
+                <i class="bi bi-patch-check-fill text-dark" title="Verified Patron"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="ahl-zauq-card">
+              <div>
+                <div class="quote-sigil">“</div>
+                <p class="ahl-zauq-quote">I ordered the Naqsh Velvet Gift Box for my sister’s trousseau in Islamabad. The calligraphy card and amber scent were breathtaking.</p>
+              </div>
+              <div class="ahl-zauq-patron">
+                <div>
+                  <span class="patron-name d-block">Dr. Aymen Qureshi</span>
+                  <span class="patron-city">Sector F-7, Islamabad</span>
+                </div>
+                <i class="bi bi-patch-check-fill text-dark" title="Verified Patron"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="ahl-zauq-card">
+              <div>
+                <div class="quote-sigil">“</div>
+                <p class="ahl-zauq-quote">Finding pure raw silk shawls that celebrate our authentic Multani embroidery with such modern restraint is so rare. ZAUK has my heart.</p>
+              </div>
+              <div class="ahl-zauq-patron">
+                <div>
+                  <span class="patron-name d-block">Syeda Mariam Gardezi</span>
+                  <span class="patron-city">Cantt, Multan</span>
+                </div>
+                <i class="bi bi-patch-check-fill text-dark" title="Verified Patron"></i>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-3">
+            <div class="ahl-zauq-card">
+              <div>
+                <div class="quote-sigil">“</div>
+                <p class="ahl-zauq-quote">Delivered in Karachi within 48 hours via COD. The organza dupatta’s four-sided zari wirework was flawless. Proud to be Ahl-e-Zauq!</p>
+              </div>
+              <div class="ahl-zauq-patron">
+                <div>
+                  <span class="patron-name d-block">Hiba Daniyal</span>
+                  <span class="patron-city">DHA Phase 6, Karachi</span>
+                </div>
+                <i class="bi bi-patch-check-fill text-dark" title="Verified Patron"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Cart Offcanvas -->
+  <div class="offcanvas offcanvas-end offcanvas-atelier-bag" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+    <div class="offcanvas-header border-b-subtle p-4">
+      <div>
+        <h5 class="offcanvas-title font-editorial fs-4 fw-normal" id="cartOffcanvasLabel">Shopping Bag</h5>
+        <span class="font-brand text-muted" style="font-size: 0.6rem; letter-spacing: 0.15em;" id="cartItemSummarySubtitle">0 ITEMS</span>
+      </div>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+
+    <!-- Free Delivery Progress Bar -->
+    <div class="px-4 py-3 bg-white border-b-subtle">
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="font-brand text-uppercase" style="font-size: 0.62rem; letter-spacing: 0.15em;" id="freeShippingText">Complimentary Shipping Over PKR 7,500</span>
+        <span class="font-brand text-dark" style="font-size: 0.65rem;" id="freeShippingStatus">PKR 7,500 Goal</span>
+      </div>
+      <div style="background: #E5DFD5; height: 3px; margin-top: 8px;">
+        <div style="background: var(--gold-ochre); height: 100%; width: 0%; transition: width 0.3s ease;" id="freeShippingProgressBar"></div>
+      </div>
+    </div>
+
+    <div class="offcanvas-body p-4 d-flex flex-column justify-content-between">
+      <div id="cartItemsList">
+        <div class="text-center py-5 text-muted">
+          <p class="font-editorial fs-5 mb-1">Your bag is empty</p>
+          <p class="small font-ui">Explore our Hijab, Dupatta and Gift Box collections.</p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t-subtle">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="font-brand text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.15em;">Subtotal</span>
+          <span class="font-editorial fs-4 fw-bold" id="cartSubtotalText">PKR 0</span>
+        </div>
+        <p class="text-muted font-ui" style="font-size: 0.68rem;">Taxes and doorstep COD calculated at checkout.</p>
+        
+        <button class="btn btn-dark w-100 py-3 rounded-0 font-brand text-uppercase mb-2" style="font-size: 0.72rem; letter-spacing: 0.24em; background: var(--raw-stone);" onclick="proceedToCheckout()">
+          Checkout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Modal -->
+  <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true" role="dialog" aria-labelledby="searchModalLabel">
+    <div class="modal-dialog modal-dialog-top modal-lg pt-5">
+      <div class="modal-content rounded-0 border-0 shadow-lg" style="background-color: var(--canvas-warm);">
+        <div class="modal-body p-4 p-lg-5">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="font-brand text-uppercase text-muted" style="font-size: 0.65rem; letter-spacing: 0.2em;" id="searchModalLabel">Search Products</span>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <form role="search" onsubmit="event.preventDefault();" class="border-bottom border-dark border-2 pb-2">
+            <input type="search" class="form-control bg-transparent border-0 fs-4 font-editorial p-0 shadow-none" id="liveSearchInput" placeholder="Type Hijab, Dupatta, Shawl, Velvet Box, Naqsh..." autocomplete="off">
+          </form>
+          <div class="mt-4" id="searchResultsContainer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-editorial" id="feedbackToast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div>
+      <span class="d-block font-brand text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.15em;" id="toastTitle">Item Added</span>
+      <span class="text-white-50 font-ui" style="font-size: 0.74rem;" id="toastMessage">Added to your shopping bag.</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t-subtle" id="journal" style="background: var(--raw-obsidian); color: #CCC7BF; font-size: 0.8rem; padding-top: 5rem;">
+    <div class="container-fluid px-lg-5 pb-5">
+      <div class="row g-5">
+        <div class="col-lg-4 col-md-6">
+          <!-- Footer Pure Image Logo -->
+          <a href="#" class="d-inline-block mb-3" aria-label="ZAUK Home">
+            <img src="./public/logo.png" alt="ZAUK Logo" class="drawer-logo-img mb-1" id="categoriesDrawerLabel">
+          </a>
+          <p class="pe-lg-4 small font-ui" style="color: #9E9A92; line-height: 1.7;">
+            ZAUK reflects the Arabic and Urdu nuance of <em>"zauq"</em>—an inherent taste for discernment, emotional drape, and modesty. Handcrafted with reverence in Multan, delivering across all of Pakistan.
+          </p>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-6">
+          <h5 class="font-brand text-white text-uppercase mb-3" style="font-size: 0.7rem; letter-spacing: 0.2em;">Shop</h5>
+          <a href="#pret-showcase" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">All Products</a>
+          <a href="#naqsh" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">Naqsh Collection</a>
+          <a href="#collections" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">Modal &amp; Silk Hijabs</a>
+          <a href="#collections" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">Organza Dupattas</a>
+          <a href="#collections" class="d-block text-decoration-none font-ui" style="color: #9E9A92;">Bridal Gift Boxes</a>
+        </div>
+
+        <div class="col-lg-2 col-md-6 col-6">
+          <h5 class="font-brand text-white text-uppercase mb-3" style="font-size: 0.7rem; letter-spacing: 0.2em;">Help</h5>
+          <a href="#" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">Shipping &amp; COD</a>
+          <a href="#" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">Returns &amp; Exchanges</a>
+          <a href="#" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">Hijab Styling Guide</a>
+          <a href="#" class="d-block text-decoration-none mb-2 font-ui" style="color: #9E9A92;">Fabric Care</a>
+          <a href="https://wa.me/923000000000" target="_blank" rel="noopener" class="d-block text-decoration-none font-ui" style="color: #9E9A92;">Contact Us</a>
+        </div>
+
+        <div class="col-lg-4 col-md-6">
+          <h5 class="font-brand text-white text-uppercase mb-3" style="font-size: 0.7rem; letter-spacing: 0.2em;">Newsletter</h5>
+          <p class="small mb-3 font-ui" style="color: #9E9A92;">
+            Subscribe to get special offers, free giveaways, and once-in-a-lifetime deals.
+          </p>
+          <form onsubmit="handleNewsletter(event)">
+            <div class="d-flex border-bottom border-secondary pb-1">
+              <input type="email" required placeholder="Enter your email address..." class="bg-transparent border-0 text-white w-100 font-ui" style="font-size: 0.82rem; outline: none;" id="newsletterEmailInput">
+              <button type="submit" class="bg-transparent border-0 text-white p-0" aria-label="Subscribe to newsletter"><i class="bi bi-arrow-right"></i></button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="border-t-subtle mt-5 pt-4 d-flex flex-wrap justify-content-between align-items-center" style="color: #7A766F; font-size: 0.74rem;">
+        <p class="mb-0 font-ui">© 2026 ZAUK.PK. ALL RIGHTS RESERVED. MULTAN, PAKISTAN 🇵🇰</p>
+        <div class="d-flex gap-3 mt-2 mt-md-0 font-ui">
+          <span>حیا کا تقدس، سادگی کا حسن</span>
+          <span>•</span>
+          <span>Shipping Policy</span>
+          <span>•</span>
+          <span>Terms of Service</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    /* 1. DATA CATALOG */
+    const PRODUCTS = [
+      {
+        id: "ZK-01",
+        title: "Mulberry Raw Silk Hijab",
+        category: "hijab",
+        categoryLabel: "PURE SILK HIJAB",
+        fabric: "100% Breathable Mulberry Silk",
+        pricePKR: 4850,
+        swatches: ["#B86B53", "#141413"],
+        imagePrimary: "./public/image37.jpeg",
+        imageSecondary: "./public/image30.jpeg",
+        badge: "Best Seller"
+      },
+      {
+        id: "ZK-02",
+        title: "Everyday Non-Slip Modal Wrap",
+        category: "hijab",
+        categoryLabel: "MODAL WRAP",
+        fabric: "Double-Twisted Organic Modal",
+        pricePKR: 2950,
+        swatches: ["#141413", "#FAF8F5"],
+        imagePrimary: "./public/image28.jpeg",
+        imageSecondary: "./public/image31.jpeg",
+        badge: "Trending"
+      },
+      {
+        id: "ZK-03",
+        title: "Antique Marori Organza Dupatta",
+        category: "dupatta",
+        categoryLabel: "EMBROIDERED DUPATTA",
+        fabric: "Pure Tissue Organza with Zari Wire",
+        pricePKR: 12500,
+        swatches: ["#5A6351", "#9E7B54"],
+        imagePrimary: "./public/image29.jpeg",
+        imageSecondary: "./public/image36.jpeg",
+        badge: "Featured"
+      },
+      {
+        id: "ZK-04",
+        title: "Multani Aari Woolen Shawl",
+        category: "shawl",
+        categoryLabel: "WINTER HEIRLOOM",
+        fabric: "Indigenous Hand-Spun Wool",
+        pricePKR: 18900,
+        swatches: ["#E7E2D7", "#B86B53"],
+        imagePrimary: "./public/image26.jpeg",
+        imageSecondary: "./public/image8.jpeg",
+        badge: "Limited"
+      },
+      {
+        id: "ZK-05",
+        title: "Bespoke Bridal Hijab Gift Suite",
+        category: "gift",
+        categoryLabel: "ذوق تحائف • GIFT BOX",
+        fabric: "Curated Silk & Velvet Packaging",
+        pricePKR: 16500,
+        swatches: ["#B86B53", "#5A6351"],
+        imagePrimary: "./public/image32.jpeg",
+        imageSecondary: "./public/image33.jpeg",
+        badge: "Gift Box"
+      },
+      {
+        id: "ZK-06",
+        title: "Scallop Embroidered Pima Chador",
+        category: "dupatta",
+        categoryLabel: "PIMA CHADOR",
+        fabric: "Double-Twisted Pima Cotton",
+        pricePKR: 7800,
+        swatches: ["#5A6351", "#E7E2D7"],
+        imagePrimary: "./public/image34.jpeg",
+        imageSecondary: "./public/image35.jpeg",
+        badge: "New Arrival"
+      },
+      {
+        id: "ZK-07",
+        title: "The Signature Keepsake Gift Box",
+        category: "gift",
+        categoryLabel: "ذوق تحائف • GIFT BOX",
+        fabric: "Rigid Box + Scent + 2 Hijabs",
+        pricePKR: 9800,
+        swatches: ["#141413", "#9E7B54"],
+        imagePrimary: "./public/image43.jpeg",
+        imageSecondary: "./public/image39.jpeg",
+        badge: "Popular Gift"
+      },
+      {
+        id: "ZK-08",
+        title: "Moonga Chiffon Festive Dupatta",
+        category: "dupatta",
+        categoryLabel: "FESTIVE DUPATTA",
+        fabric: "Moonga Chiffon with Pure Metallic Tilla",
+        pricePKR: 14500,
+        swatches: ["#9E7B54", "#141413"],
+        imagePrimary: "./public/image38.jpeg",
+        imageSecondary: "./public/image40.jpeg",
+        badge: "Festive"
+      }
+    ];
+
+    /* 2. SIGNATURE FABRIC PROFILE IMAGE SWITCHER */
+
+    function selectHeroEnsemble(button, index) {
+
+      const tabs = document.querySelectorAll('.curation-tab-btn');
+
+      tabs.forEach((tab) => {
+        tab.classList.remove('active');
+        tab.setAttribute('aria-selected', 'false');
+      });
+
+      button.classList.add('active');
+      button.setAttribute('aria-selected', 'true');
+
+      const images = document.querySelectorAll('.atelier-trio-image');
+
+      images.forEach((image) => {
+        image.classList.remove('is-selected');
+        image.setAttribute('aria-hidden', 'true');
+      });
+
+      const selectedImage = document.querySelector(
+        `.atelier-trio-image[data-atelier-image="${index}"]`
+      );
+
+      if (selectedImage) {
+        selectedImage.classList.add('is-selected');
+        selectedImage.setAttribute('aria-hidden', 'false');
+      }
+
+      const productMap = [
+        'ZK-01',
+        'ZK-04',
+        'ZK-05'
+      ];
+
+      const productId = productMap[index];
+      const acquireButton = document.getElementById('heroAcquireBtn');
+
+      if (acquireButton && productId) {
+        acquireButton.onclick = function () {
+          quickAddToCart(productId);
+        };
+      }
+    }
+
+    /* 3. NAQSH MANUAL NUDGE ENGINE */
+    function nudgeDrift(direction) {
+      const track = document.getElementById('naqshStreamTrack');
+      const currentTransform = getComputedStyle(track).transform;
+      let matrixX = 0;
+      if (currentTransform !== 'none') {
+        const values = currentTransform.split('(')[1].split(')')[0].split(',');
+        matrixX = parseFloat(values[4]);
+      }
+      const nudgeAmount = direction === 'left' ? 320 : -320;
+      track.style.animation = 'none';
+      track.style.transform = `translateX(${matrixX + nudgeAmount}px)`;
+      setTimeout(() => {
+        track.style.animation = 'slowMotionDrift 60s linear infinite';
+      }, 50);
+    }
+
+    /* 4. CART & WISHLIST ENGINE */
+    let cart = [];
+    let wishlist = new Set();
+    const FREE_SHIPPING_THRESHOLD = 7500;
+
+    function quickAddToCart(productId) {
+      const product = PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      const existingItem = cart.find(item => item.id === productId);
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          title: product.title,
+          fabric: product.fabric,
+          pricePKR: product.pricePKR,
+          image: product.imagePrimary,
+          quantity: 1
+        });
+      }
+
+      updateCartUI();
+      showToast("Added to Bag", `${product.title} has been added.`);
+
+      const cartEl = document.getElementById('cartOffcanvas');
+      const cartOffcanvas = bootstrap.Offcanvas.getInstance(cartEl) || new bootstrap.Offcanvas(cartEl);
+      cartOffcanvas.show();
+    }
+
+    function updateItemQuantity(productId, delta) {
+      const item = cart.find(i => i.id === productId);
+      if (!item) return;
+
+      item.quantity += delta;
+      if (item.quantity <= 0) {
+        removeCartItem(productId);
+        return;
+      }
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const listEl = document.getElementById('cartItemsList');
+      const badgeEl = document.getElementById('cartCountBadge');
+      const totalEl = document.getElementById('cartSubtotalText');
+      const summaryEl = document.getElementById('cartItemSummarySubtitle');
+      const progEl = document.getElementById('freeShippingProgressBar');
+      const statusEl = document.getElementById('freeShippingStatus');
+
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      const total = cart.reduce((sum, item) => sum + (item.pricePKR * item.quantity), 0);
+
+      badgeEl.textContent = count;
+      summaryEl.textContent = `${count} ${count === 1 ? 'ITEM' : 'ITEMS'}`;
+      totalEl.textContent = `PKR ${total.toLocaleString()}`;
+
+      const progress = Math.min((total / FREE_SHIPPING_THRESHOLD) * 100, 100);
+      progEl.style.width = `${progress}%`;
+
+      if (total >= FREE_SHIPPING_THRESHOLD) {
+        statusEl.textContent = "FREE SHIPPING UNLOCKED";
+        statusEl.style.color = "var(--gold-ochre)";
+      } else {
+        const diff = FREE_SHIPPING_THRESHOLD - total;
+        statusEl.textContent = `PKR ${diff.toLocaleString()} away from free delivery`;
+        statusEl.style.color = "var(--raw-stone)";
+      }
+
+      if (cart.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-5 text-muted">
+            <p class="font-editorial fs-5 mb-1">Your bag is empty</p>
+            <p class="small font-ui">Explore our Hijab, Dupatta and Gift Box collections.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = cart.map(item => `
+        <div class="d-flex gap-3 pb-3 mb-3 border-b-subtle align-items-center">
+          <img src="${item.image}" alt="${item.title}" style="width: 60px; height: 80px; object-fit: cover;">
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start">
+              <span class="font-editorial fw-bold" style="font-size: 0.88rem;">${item.title}</span>
+              <button class="bg-transparent border-0 text-muted p-0" onclick="removeCartItem('${item.id}')" aria-label="Remove item">
+                <i class="bi bi-x fs-5"></i>
+              </button>
+            </div>
+            <span class="text-muted d-block font-ui" style="font-size: 0.65rem;">${item.fabric}</span>
+            <span class="d-block mt-1 font-ui" style="font-size: 0.78rem;">PKR ${item.pricePKR.toLocaleString()}</span>
+            
+            <div class="d-flex align-items-center justify-content-between mt-2">
+              <div class="d-flex align-items-center border border-subtle">
+                <button class="qty-counter-btn" onclick="updateItemQuantity('${item.id}', -1)" aria-label="Decrease quantity">−</button>
+                <span class="px-2 small font-ui">${item.quantity}</span>
+                <button class="qty-counter-btn" onclick="updateItemQuantity('${item.id}', 1)" aria-label="Increase quantity">+</button>
+              </div>
+              <span class="fw-bold font-editorial">PKR ${(item.pricePKR * item.quantity).toLocaleString()}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function removeCartItem(id) {
+      cart = cart.filter(i => i.id !== id);
+      updateCartUI();
+      showToast("Bag Updated", "Item removed.");
+    }
+
+    function toggleWishlist(productId, btn) {
+      const icon = btn.querySelector('i');
+      if (wishlist.has(productId)) {
+        wishlist.delete(productId);
+        btn.classList.remove('active');
+        icon.className = 'bi bi-heart';
+        showToast("Wishlist Updated", "Item removed from wishlist.");
+      } else {
+        wishlist.add(productId);
+        btn.classList.add('active');
+        icon.className = 'bi bi-heart-fill';
+        showToast("Wishlist Updated", "Item saved to wishlist.");
+      }
+      document.getElementById('wishlistCountBadge').textContent = wishlist.size;
+    }
+
+    function renderProductGrid(items) {
+      const container = document.getElementById('productsGridContainer');
+      container.innerHTML = '';
+
+      items.forEach(product => {
+        const isFav = wishlist.has(product.id);
+        const col = document.createElement('div');
+        col.className = 'col-6 col-md-6 col-lg-3';
+
+        col.innerHTML = `
+          <div class="luxury-product-card">
+            <div class="product-media">
+              ${product.badge ? `<span class="badge-run">${product.badge}</span>` : ''}
+              
+              <button class="wishlist-pill ${isFav ? 'active' : ''}" onclick="toggleWishlist('${product.id}', this)" aria-label="Add to wishlist">
+                <i class="bi ${isFav ? 'bi-heart-fill' : 'bi-heart'}"></i>
+              </button>
+
+              <img src="${product.imagePrimary}" alt="${product.title}" class="product-img-front" loading="lazy">
+              <img src="${product.imageSecondary}" alt="${product.title}" class="product-img-back" loading="lazy">
+
+              <button class="btn-slide-select" onclick="quickAddToCart('${product.id}')">
+                Add to Bag
+              </button>
+            </div>
+
+            <div class="pt-2">
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="text-muted font-ui" style="font-size: 0.65rem;">${product.fabric}</span>
+                <span class="font-brand text-muted" style="font-size: 0.58rem;">${product.categoryLabel}</span>
+              </div>
+              <h3 class="font-editorial mb-1" style="font-size: 1.05rem; font-weight: 500; margin-top: 4px;">${product.title}</h3>
+              <div class="d-flex align-items-center justify-content-between mt-1">
+                <span class="font-ui" style="font-size: 0.88rem; font-weight: 500;">PKR ${product.pricePKR.toLocaleString()}</span>
+                <div>
+                  ${product.swatches.map(c => `<span style="width: 8px; height: 8px; border-radius: 50%; display: inline-block; background-color: ${c}; margin-left: 3px;"></span>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(col);
+      });
+    }
+
+    function filterProducts(category) {
+      document.querySelectorAll('.catalog-filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase().includes(category) || (category === 'all' && btn.textContent.includes('All'))) {
+          btn.classList.add('active');
+        }
+      });
+
+      if (category === 'all') {
+        renderProductGrid(PRODUCTS);
+      } else {
+        renderProductGrid(PRODUCTS.filter(p => p.category === category));
+      }
+    }
+
+    /* Live Search */
+    document.getElementById('liveSearchInput').addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const resultsContainer = document.getElementById('searchResultsContainer');
+
+      if (!q) {
+        resultsContainer.innerHTML = '';
+        return;
+      }
+
+      const matches = PRODUCTS.filter(p => 
+        p.title.toLowerCase().includes(q) || 
+        p.fabric.toLowerCase().includes(q) || 
+        p.categoryLabel.toLowerCase().includes(q)
+      );
+
+      if (matches.length === 0) {
+        resultsContainer.innerHTML = `<p class="font-editorial text-muted">No products match "${q}". Search 'Hijab', 'Shawl', or 'Gift Box'.</p>`;
+        return;
+      }
+
+      resultsContainer.innerHTML = matches.map(m => `
+        <div class="d-flex align-items-center justify-content-between py-2 border-b-subtle">
+          <div>
+            <span class="font-editorial fw-bold d-block" style="font-size: 0.95rem;">${m.title}</span>
+            <span class="text-muted small font-ui">${m.fabric} • PKR ${m.pricePKR.toLocaleString()}</span>
+          </div>
+          <button class="btn btn-sm btn-outline-dark rounded-0 font-brand text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.16em;" onclick="quickAddToCart('${m.id}')" data-bs-dismiss="modal">
+            Add to Bag
+          </button>
+        </div>
+      `).join('');
+    });
+
+    /* Toast Notification */
+    let toastTimer = null;
+    function showToast(title, msg) {
+      const el = document.getElementById('feedbackToast');
+      document.getElementById('toastTitle').textContent = title;
+      document.getElementById('toastMessage').textContent = msg;
+
+      el.classList.add('visible');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('visible'), 3200);
+    }
+
+    function handleNewsletter(e) {
+      e.preventDefault();
+      showToast("Subscription Confirmed", "Thank you for subscribing to our updates.");
+      document.getElementById('newsletterEmailInput').value = '';
+    }
+
+    /* Automated WhatsApp Order Routing */
+    function proceedToCheckout() {
+      if (cart.length === 0) {
+        showToast("Bag is Empty", "Please add items to your bag first.");
+        return;
+      }
+      
+      const total = cart.reduce((sum, item) => sum + (item.pricePKR * item.quantity), 0);
+      const itemsList = cart.map(i => `• ${i.title} (${i.quantity}x) - PKR ${(i.pricePKR * i.quantity).toLocaleString()}`).join('\n');
+      const orderMessage = `*ZAUK Order Checkout*\n\n${itemsList}\n\n*Total Amount:* PKR ${total.toLocaleString()}\n*Delivery:* Nationwide COD 🇵🇰`;
+      
+      const whatsappUrl = `https://wa.me/923000000000?text=${encodeURIComponent(orderMessage)}`;
+      window.open(whatsappUrl, '_blank');
+    }
+
+    ['pointerdown', 'touchstart', 'keydown'].forEach((eventName) => {
+      window.addEventListener(eventName, startHeroVideo, { once: true, passive: true });
+    });
+
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('siteHeader');
+      if (window.scrollY > 30) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+
+    /* Local hero video: keep playback reliable without changing the visual design. */
+    function startHeroVideo() {
+      const video = document.getElementById('heroVideoElement');
+
+      if (!video) return;
+
+      video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+
+      const playPromise = video.play();
+
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {
+          // Browsers may defer autoplay until the first user interaction.
+        });
+      }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        startHeroVideo();
+      }
+    });
+
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProductGrid(PRODUCTS);
+      startHeroVideo();
+    });
+  </script>
+</body>
+</html>
